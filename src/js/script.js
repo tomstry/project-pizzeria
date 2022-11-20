@@ -88,13 +88,13 @@
         /* prevent default action for event */
         event.preventDefault();
         /* find active product (product that has active class) */
-        const activeproduct = document.querySelector(classNames.menuProduct.wrapperActive);
+        const activeproduct = document.querySelector(select.all.menuProductsActive);
         /* if there is active product and it's not thisProduct.element, remove class active from it */
-        if(activeproduct && activeproduct != this.element){
-          activeproduct.remove('active');
+        if(activeproduct != null && activeproduct != thisProduct.element){
+          activeproduct.classList.remove(classNames.menuProduct.wrapperActive);
         }
         /* toggle active class on thisProduct.element */
-        thisProduct.element.classList.toggle('active');        
+        thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);        
       });
 
     }
