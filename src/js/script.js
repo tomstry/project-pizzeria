@@ -87,6 +87,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       
     }
 
@@ -141,15 +142,24 @@
       for(let paramId in thisProduct.data.params){
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
+        // console.log(paramId,param);
         // for every option in this category
         for(let optionId in param.options){
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];       
-
+          // console.log(optionId,option);
           if(formData[paramId] && formData[paramId].includes(optionId) && !option.default){
             price += option.price;
           }else if(formData[paramId] && formData[paramId].includes(optionId) == false && option.default){
             price -= option.price;
+          }
+          const image = thisProduct.imageWrapper.querySelector('.'+ paramId+'-'+ optionId+'');
+          if(image){
+            if(formData[paramId] && formData[paramId].includes(optionId)){
+              image.classList.add(classNames.menuProduct.imageVisible);
+            }else{
+              image.classList.remove(classNames.menuProduct.imageVisible);
+            }
           }
         }
       }
