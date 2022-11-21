@@ -134,7 +134,6 @@
       const thisProduct = this;
 
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData',formData);
 
       // set price to default price 
       let price = thisProduct.data.price;
@@ -142,13 +141,16 @@
       for(let paramId in thisProduct.data.params){
         // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
         const param = thisProduct.data.params[paramId];
-        console.log(paramId, param);       
-
         // for every option in this category
         for(let optionId in param.options){
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
-          const option = param.options[optionId];
-          console.log(optionId, option);
+          const option = param.options[optionId];       
+
+          if(formData[paramId] && formData[paramId].includes(optionId) && !option.default){
+            price += option.price;
+          }else if(formData[paramId] && formData[paramId].includes(optionId) == false && option.default){
+            price -= option.price;
+          }
         }
       }
       // update calculated price in the HTML
@@ -159,7 +161,6 @@
   const app = {
     initMenu: function(){
       const thisApp = this;
-      console.log('thisApp.data: ', thisApp.data);
       
       for(let productData in thisApp.data.products){
         new Product(productData, thisApp.data.products[productData]);
@@ -174,12 +175,7 @@
 
     init: function(){
       const thisApp = this;
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
-
+      console.log(settings);
       thisApp.initData();
       thisApp.initMenu();
     },
