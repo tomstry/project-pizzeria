@@ -355,7 +355,7 @@
       });
 
       thisCart.dom.productList.addEventListener('remove',function(){
-        thisCart.remove();
+        thisCart.remove(event.detail.cartProduct);
       });
     }
 
@@ -389,9 +389,11 @@
       }
       if(totalNumber != 0){
         thisCart.totalPrice = subtotalPrice + deliveryFee;
+      }else{
+        thisCart.totalPrice = 0;
+        thisCart.dom.deliveryFee.innerHTML = 0;
       }
       // console.log('totalnum: ',totalNumber, 'subtot: ',subtotalPrice, 'total: ',thisCart.totalPrice);
-      thisCart.dom.deliveryFee.innerHTML = deliveryFee;
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
       for(let totalPriceHold of thisCart.dom.totalPrice){
@@ -402,7 +404,12 @@
     remove(productToRemove){
       const thisCart = this;
 
-      
+      productToRemove.dom.wrapper.remove();
+
+      const indexToRemove = thisCart.products.indexOf(productToRemove);
+      thisCart.products.splice(indexToRemove, 1);
+
+      thisCart.update();
     }
   }
 
